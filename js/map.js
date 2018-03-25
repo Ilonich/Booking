@@ -34,7 +34,7 @@ var ADS = [
 					'price': getRandomValue(1000000, 1000),
 					'type': 'house',
 					'rooms': getRandomNumber(5),
-					'guests': getRandomNumber(5),
+					'guests': getRandomNumber(3),
 					'checkin': '12:00',
 					'checkout': '13:00',
 					'features': ["wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"],
@@ -86,12 +86,15 @@ var map = document.querySelector('.map');
 //Pins
 var mapPinTemplate = document.querySelector('template').content.querySelector('.map__pin');
 
-
 var renderPins = function(pin) {
 	var mapPin = mapPinTemplate.cloneNode(true);
 	mapPin.style.left = ADS[i].location.x + 'px';
 	mapPin.style.top = ADS[i].location.y + 'px';
 	mapPin.querySelector('img').src = ADS[i].author.avatar;
+	
+	mapPin.addEventListener('mouseup', function() {
+		renderAdOnMap();
+	});
 	return mapPin;
 }
 
@@ -102,23 +105,30 @@ for (var i = 0; i < ADS.length; i++) {
 
 var renderPinsOnMap = function() {
 	map.appendChild(fragment);
+
 }
+
 
 //Ad window
 var adWindowTemplate = document.querySelector('template').content.querySelector('.map__card');
 
 var renderAdOnMap = function() {
 
-	var addWindow = adWindowTemplate.cloneNode(true);
-	addWindow.querySelector('h3').textContent = ADS[0].offer.title;
-	addWindow.querySelector('small').textContent = ADS[0].offer.adress;
-	addWindow.querySelector('.popup__price').innerHTML =  ADS[0].offer.price + '&#x20bd;/ночь';
-	addWindow.querySelector('h4').textContent = ADS[0].offer.type;
+	var adWindow = adWindowTemplate.cloneNode(true);
+	adWindow.querySelector('h3').textContent = ADS[0].offer.title;
+	adWindow.querySelector('small').textContent = ADS[0].offer.adress;
+	adWindow.querySelector('.popup__price').innerHTML =  ADS[0].offer.price + '&#x20bd;/ночь';
+	adWindow.querySelector('h4').textContent = ADS[0].offer.type;
 
 	var fragment = document.createDocumentFragment();
-	fragment.appendChild(addWindow);
+	fragment.appendChild(adWindow);
 
 	map.appendChild(fragment);
+
+	var adWindowClose= adWindow.querySelector('.popup__close');
+	adWindowClose.addEventListener('click', function() {
+		map.removeChild(adWindow);
+	});
 }
 
 //Event listeners on Main Pin
@@ -136,7 +146,15 @@ fieldsetsDisable(true);
 mainPin.addEventListener('mouseup', function() {
 	map.classList.remove('map--faded');
 	form.classList.remove('notice__form--disabled');
-	renderAdOnMap();
+	//renderAdOnMap();
 	renderPinsOnMap();
 	fieldsetsDisable(false);
+	
 });
+
+//Event Listener on other Pins
+var pin = map.querySelectorAll('.map__pin');
+
+
+	
+
