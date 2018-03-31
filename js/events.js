@@ -1,8 +1,14 @@
-var dragPinEvent = function() {
+var mainPinEvent = function() {
     map.classList.remove('map--faded');
     form.classList.remove('notice__form--disabled');
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < ADS.length; i++) {
+        fragment.appendChild(renderPins(ADS[i]));
+    }
+
     map.appendChild(fragment);
-    fieldsetsDisable(false);
+    setInputsDisabled(fieldsets, false);
 };
 
 var renderAdOnMap = function (pin) {

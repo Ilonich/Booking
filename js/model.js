@@ -1,3 +1,7 @@
+var mapPinTemplate = document.querySelector('template').content.querySelector('.map__pin');
+var adWindowTemplate = document.querySelector('template').content.querySelector('.map__card');
+var form = document.querySelector('.notice__form');
+
 var ADS = [
     {
         'author': {
